@@ -10,17 +10,22 @@ export default class Article extends Component {
 
   }
   render() {
+    const {article} = this.props;
+    const {isOpen} = this.state;
     return (
         <div>
           <h3>{article.title}</h3>
-          <button onClick={this.toggleOpen}>Open</button>
+          <button onClick={this.toggleOpen}>
+            {isOpen ? 'close' : 'Open'}
+          </button>
           {this.getBody()}
         </div>
     )
   }
 
   getBody () {
-    if (!this.state.isOpen) return null
+    if (!this.state.isOpen)
+      return null;
     const {article} = this.props;
     return <section>{article.text}</section>;
   }
