@@ -1,20 +1,20 @@
-import React, {Component} from 'react'
+import React, {Component, PureComponent} from 'react'
 import PropTypes from 'prop-types'
 import CommentList from './CommentList'
 import toggleOpen from '../decorators/toggleOpen'
 
-class Article extends Component {
+class Article extends PureComponent {
 
   static propTypes = {
     article: PropTypes.object.isRequired
   };
 
-  componentWillReceiveProps(nextProps) {
-    console.log("-----", 'updating', this.props.isOpen, nextProps.isOpen);
-  }
+  state = {
+    updateIndex: 0
+  };
 
-  componentWillMount() {
-    console.log("-----", 'mounting');
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps.isOpen !== this.props.isOpen;
   }
 
   render() {
@@ -46,9 +46,13 @@ class Article extends Component {
     return (
       <section>
         {article.text}
-        <CommentList comments = {article.comments} ref={this.setContainerRef}/>
+        <button onClick={() => this.setState({updateIndex: this.state.updateIndex +1})}>Click update</button>
+        <CommentList comments = {article.comments} ref={this.setCommentsRef} key={this.state.updateIndex} />
       </section>
     )
+  }
+  setCommentsRef = ref => {
+    console.log('-----', ref);
   }
 }
 
